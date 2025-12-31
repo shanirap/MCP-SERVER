@@ -24,3 +24,11 @@ env/
 # uv
 # Keep uv.lock (recommended), ignore uv cache if appears
 .uv/
+
+.coverage
+htmlcov/
+.pytest_cache/
+__pycache__/
+.venv/
+.env
+
