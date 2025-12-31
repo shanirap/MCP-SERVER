@@ -1,0 +1,26 @@
+# Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest
+.pytest_cache/
+
+# Virtual envs
+.venv/
+venv/
+ENV/
+env/
+
+# OS / editor
+.vscode/
+.DS_Store
+
+# Secrets / local env files
+.env
+.ENV
+*.env
+
+# uv
+# Keep uv.lock (recommended), ignore uv cache if appears
+.uv/
