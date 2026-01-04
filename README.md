@@ -40,12 +40,12 @@ debug_project(target="demo_project")
 Expected output (example):
 ```text
 Failures:
-- demo_project/some_module.py:42
+- demo_project/test_calc.py:11 (test_divide_by_zero) — Failed: DID NOT RAISE ZeroDivisionError
 
 Context (±12):
-  36 def divide(a, b):
-  37     ...
-  42     return a / b
+  10 def test_divide_by_zero():
+  11     with pytest.raises(ZeroDivisionError):
+  12         _ = divide(10, 0)
 ```
 
 ## Demo project
