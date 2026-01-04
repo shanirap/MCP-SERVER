@@ -50,7 +50,7 @@ Context (±12):
 
 ## Demo project
 - `demo_project/` — minimal demo with an intentional failing test (fast to understand)
-```
+
 
 ## Future work (ideas)
 - **Test scaffolding (opt-in):** detect projects with no tests and optionally generate a minimal smoke test skeleton (e.g., `tests/test_smoke.py`) to validate imports / basic execution before running deeper debugging flows.
