@@ -50,3 +50,13 @@ Context (±12):
 
 ## Demo project
 - `demo_project/` — minimal demo with an intentional failing test (fast to understand)
+```
+
+## Future work (ideas)
+- **Test scaffolding (opt-in):** detect projects with no tests and optionally generate a minimal smoke test skeleton (e.g., `tests/test_smoke.py`) to validate imports / basic execution before running deeper debugging flows.
+- **Richer failure parsing:** better extraction for parameterized tests and multi-traceback outputs.
+- **Autofix loop:** apply a patch (manual approval) → re-run pytest → summarize diff + results.
+
+> Note: Automatically generating meaningful tests is highly project-specific. The goal would be lightweight scaffolding (opt-in), not replacing real, requirement-driven tests.
+
+
