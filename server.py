@@ -1,7 +1,7 @@
 import logging
 import os
 import re
-import subprocess  # <-- NEW: tests expect server.subprocess
+import subprocess  
 import sys
 from pathlib import Path
 from typing import Any, Dict
@@ -15,10 +15,6 @@ from debug_companion.context_tools import extract_failures_impl, open_context_im
 from debug_companion.gemini_client import analyze_error_with_gemini_impl
 from debug_companion.orchestrator import debug_project_impl
 
-try:
-    import google.generativeai as genai
-except ImportError:  # pragma: no cover
-    genai = None
 
 load_dotenv()
 
@@ -27,7 +23,7 @@ log = logging.getLogger("debug-companion")
 
 mcp = FastMCP("debug-companion")
 
-# Keep these globals for tests that monkeypatch them
+
 ROOT_DIR = Path(__file__).resolve().parent
 DEFAULT_TARGET = "demo_project"
 
@@ -80,7 +76,6 @@ def open_context(path: str, line: int, radius: int = 25, base_dir: str = "") -> 
 @mcp.tool()
 def analyze_error_with_gemini(error_message: str, code_context: str = "") -> Dict[str, Any]:
     return analyze_error_with_gemini_impl(
-        genai_module=genai,
         logger=log,
         error_message=error_message,
         code_context=code_context,

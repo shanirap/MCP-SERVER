@@ -1,10 +1,13 @@
 # Debug Companion MCP (Pytest Debugging Agent)
 
-A local MCP server that helps an AI coding agent debug Python projects by:
-- Running pytest safely via subprocess
-- Extracting failure locations (file:line)
-- Opening code context around the failure
-- (Optional) Asking Gemini for a fix suggestion
+Local MCP server that helps an AI coding agent debug Python projects by turning `pytest` failures into:
+- Exact failure locations (`file:line`)
+- A focused code context window around the failure
+- Optional LLM suggestion (Gemini) for a fix
+
+## Why this exists
+When an agent gets a long pytest output, it often wastes time hunting for the real failure spot.
+This server extracts the actionable bits and returns them in a structured, tool-friendly way.
 
 ## Requirements
 - Python 3.12+
@@ -20,28 +23,30 @@ uv sync
 uv run python server.py
 ```
 
-## Available tools
+## Tools
 - `ping` — health check
-- `run_pytest(target, max_output_lines, timeout_seconds)` — run pytest safely
-- `extract_failures(pytest_output, limit, base_dir)` — parse `file.py:line:` from pytest output
-- `open_context(path, line, radius, base_dir)` — return a code window around a line
+- `run_pytest(target, max_output_lines=200, timeout_seconds=30)` — run pytest safely (bounded output + timeout)
+- `extract_failures(pytest_output, limit=5, base_dir=".")` — parse `file.py:line` locations from pytest output
+- `open_context(path, line, radius=12, base_dir=".")` — return a code window around a line
 - `debug_project(target, ...)` — orchestrates:
   `run_pytest → extract_failures → open_context → (optional) Gemini analysis`
 
-## Recommended demo flow
-1. Run `debug_project` on `demo_project` (intentionally contains a failing test).
-2. Observe: extracted `file:line` + code context window.
-3. Apply the suggested fix (or a one-line fix manually).
-4. Re-run → tests pass.
+## Quick demo
+Run on the intentionally failing demo project:
+```text
+debug_project(target="demo_project")
+```
 
-## Environment variables
-- `GEMINI_API_KEY` — enable Gemini analysis (optional)
-- `MCP_ALLOWED_ROOTS` — allow access to absolute paths outside the server root (optional)
+Expected output (example):
+```text
+Failures:
+- demo_project/some_module.py:42
 
-## CI
-GitHub Actions runs server tests on each push/PR:
-- workflow: `.github/workflows/tests.yml`
+Context (±12):
+  36 def divide(a, b):
+  37     ...
+  42     return a / b
+```
 
-## Notes
-- `demo_project` is intended for demonstration and may contain a deliberate failing test.
-- Server tests live under `tests/`.
+## Demo project
+- `demo_project/` — minimal demo with an intentional failing test (fast to understand)
